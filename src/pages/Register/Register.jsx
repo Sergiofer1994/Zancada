@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import './Login.css'
+import '../Login/Login.css'
 
-function Login() {
+function Register() {
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState({})
@@ -10,6 +11,10 @@ function Login() {
 
   const validate = () => {
     const newErrors = {}
+
+    if (!name) {
+      newErrors.name = 'El nombre es obligatorio'
+    }
 
     if (!email) {
       newErrors.email = 'El email es obligatorio'
@@ -36,16 +41,34 @@ function Login() {
     }
 
     setErrors({})
+    console.log('Nombre:', name)
     console.log('Email:', email)
     console.log('Contraseña:', password)
   }
 
   return (
-    <main role="main" aria-label="Pantalla de inicio de sesión">
+    <main role="main" aria-label="Pantalla de registro">
       <h1>Zancada</h1>
-      <p>Tu compañero de carrera</p>
+      <p>Crea tu cuenta gratis</p>
 
-      <form onSubmit={handleSubmit} aria-label="Formulario de inicio de sesión">
+      <form onSubmit={handleSubmit} aria-label="Formulario de registro">
+
+        <label htmlFor="name">Nombre</label>
+        <input
+          id="name"
+          type="text"
+          placeholder="Introduce tu nombre"
+          aria-required="true"
+          aria-describedby="name-error"
+          autoComplete="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        {errors.name && (
+          <span id="name-error" role="alert" className="error">
+            {errors.name}
+          </span>
+        )}
 
         <label htmlFor="email">Email</label>
         <input
@@ -68,10 +91,10 @@ function Login() {
         <input
           id="password"
           type="password"
-          placeholder="Introduce tu contraseña"
+          placeholder="Mínimo 6 caracteres"
           aria-required="true"
           aria-describedby="password-error"
-          autoComplete="current-password"
+          autoComplete="new-password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
@@ -81,16 +104,12 @@ function Login() {
           </span>
         )}
 
-        <a href="#" aria-label="Recuperar contraseña olvidada">
-          ¿Olvidaste tu contraseña?
-        </a>
-
         <button type="submit">
-          Iniciar sesión
+          Crear cuenta
         </button>
 
-        <button type="button" onClick={() => navigate('/register')}>
-          Crear cuenta nueva
+        <button type="button" onClick={() => navigate('/')}>
+          Ya tengo cuenta
         </button>
 
       </form>
@@ -98,4 +117,4 @@ function Login() {
   )
 }
 
-export default Login
+export default Register
