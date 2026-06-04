@@ -47,7 +47,7 @@ function Register() {
   }
 
   return (
-    <main role="main" aria-label="Pantalla de registro">
+    <main className="auth-page" role="main" aria-label="Pantalla de registro">
       <h1>Zancada</h1>
       <p>Crea tu cuenta gratis</p>
 
@@ -69,6 +69,18 @@ function Register() {
             {errors.name}
           </span>
         )}
+
+        <label htmlFor="gender">Género</label>
+        <select
+          id="gender"
+          aria-required="true"
+          aria-describedby="gender-error"
+        >
+          <option value="">Selecciona tu género</option>
+          <option value="male">Hombre</option>
+          <option value="female">Mujer</option>
+          <option value="other">Prefiero no decirlo</option>
+        </select>
 
         <label htmlFor="email">Email</label>
         <input

@@ -36,12 +36,11 @@ function Login() {
     }
 
     setErrors({})
-    console.log('Email:', email)
-    console.log('Contraseña:', password)
+    navigate('/home')
   }
 
   return (
-    <main role="main" aria-label="Pantalla de inicio de sesión">
+    <main className="auth-page" role="main" aria-label="Pantalla de inicio de sesión">
       <h1>Zancada</h1>
       <p>Tu compañero de carrera</p>
 
