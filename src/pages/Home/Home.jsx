@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import NavBar from '../NavBar/NavBar.jsx'
 import './Home.css'
 
 function Home() {
@@ -68,6 +69,7 @@ function Home() {
         </ul>
       </section>
 
+      <NavBar />
     </main>
   )
 }
