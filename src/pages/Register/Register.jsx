@@ -4,6 +4,7 @@ import '../Login/Login.css'
 
 function Register() {
   const [name, setName] = useState('')
+  const [gender, setGender] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState({})
@@ -14,6 +15,10 @@ function Register() {
 
     if (!name) {
       newErrors.name = 'El nombre es obligatorio'
+    }
+
+    if (!gender) {
+      newErrors.gender = 'Selecciona una opción'
     }
 
     if (!email) {
@@ -42,6 +47,7 @@ function Register() {
 
     setErrors({})
     console.log('Nombre:', name)
+    console.log('Género:', gender)
     console.log('Email:', email)
     console.log('Contraseña:', password)
   }
@@ -70,17 +76,47 @@ function Register() {
           </span>
         )}
 
-        <label htmlFor="gender">Género</label>
-        <select
-          id="gender"
-          aria-required="true"
-          aria-describedby="gender-error"
+        <label id="gender-label">Género</label>
+        <div
+          className="gender-options"
+          role="group"
+          aria-labelledby="gender-label"
         >
-          <option value="">Selecciona tu género</option>
-          <option value="male">Hombre</option>
-          <option value="female">Mujer</option>
-          <option value="other">Prefiero no decirlo</option>
-        </select>
+          <button
+            type="button"
+            className={gender === 'male' ? 'gender-button selected' : 'gender-button'}
+            onClick={() => setGender('male')}
+            aria-pressed={gender === 'male'}
+            aria-label="Hombre"
+          >
+            <span>Hombre</span>
+          </button>
+
+          <button
+            type="button"
+            className={gender === 'female' ? 'gender-button selected' : 'gender-button'}
+            onClick={() => setGender('female')}
+            aria-pressed={gender === 'female'}
+            aria-label="Mujer"
+          >
+            <span>Mujer</span>
+          </button>
+
+          <button
+            type="button"
+            className={gender === 'other' ? 'gender-button selected' : 'gender-button'}
+            onClick={() => setGender('other')}
+            aria-pressed={gender === 'other'}
+            aria-label="Prefiero no decirlo"
+          >
+            <span>Otro</span>
+          </button>
+        </div>
+        {errors.gender && (
+          <span id="gender-error" role="alert" className="error">
+            {errors.gender}
+          </span>
+        )}
 
         <label htmlFor="email">Email</label>
         <input
