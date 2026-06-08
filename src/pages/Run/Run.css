@@ -1,0 +1,70 @@
+.run-page {
+  max-width: 400px;
+  margin: 0 auto;
+  background: #e5e5e5;
+  min-height: 100vh;
+  padding: 0 16px 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.run-page .run-header {
+  background: #0f6e56;
+  margin: 0 -16px;
+  padding: 24px 16px;
+  text-align: center;
+}
+
+.run-page .live-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 3px 12px;
+  color: #ffffff;
+  font-size: 11px;
+  margin-bottom: 12px;
+}
+
+.run-page .time-display {
+  color: #ffffff;
+  font-size: 56px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.run-page .time-label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px;
+}
+
+.run-page .pause-button {
+  width: 100%;
+  padding: 14px;
+  background: #ffffff;
+  color: #333;
+  border: 1px solid #d0d0d0;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 24px;
+}
+
+.run-page .stop-button {
+  width: 100%;
+  padding: 14px;
+  background: transparent;
+  color: #E24B4A;
+  border: 2px solid #E24B4A;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 12px;
+}
+
+.run-page .pause-button:focus,
+.run-page .stop-button:focus {
+  outline: 3px solid #5DCAA5;
+  outline-offset: 2px;
+}
