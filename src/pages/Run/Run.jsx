@@ -6,6 +6,7 @@ function Run() {
   const [seconds, setSeconds] = useState(0)
   const [isRunning, setIsRunning] = useState(true)
   const [positions, setPositions] = useState([])
+  const [distance, setDistance] = useState(0)
   const [gpsError, setGpsError] = useState('')
   const navigate = useNavigate()
 
@@ -48,6 +49,39 @@ function Run() {
     return () => navigator.geolocation.clearWatch(watchId)
   }, [])
 
+  useEffect(() => {
+    if (positions.length < 2) {
+      return
+    }
+
+    const lastPoint = positions[positions.length - 1]
+    const previousPoint = positions[positions.length - 2]
+    const segmentDistance = calculateDistance(previousPoint, lastPoint)
+
+    setDistance((prev) => prev + segmentDistance)
+  }, [positions])
+
+  const calculateDistance = (pointA, pointB) => {
+    const earthRadius = 6371
+    const latDifference = toRadians(pointB.latitude - pointA.latitude)
+    const lonDifference = toRadians(pointB.longitude - pointA.longitude)
+
+    const a =
+      Math.sin(latDifference / 2) * Math.sin(latDifference / 2) +
+      Math.cos(toRadians(pointA.latitude)) *
+        Math.cos(toRadians(pointB.latitude)) *
+        Math.sin(lonDifference / 2) *
+        Math.sin(lonDifference / 2)
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+
+    return earthRadius * c
+  }
+
+  const toRadians = (degrees) => {
+    return degrees * (Math.PI / 180)
+  }
+
   const formatTime = (totalSeconds) => {
     const minutes = Math.floor(totalSeconds / 60)
     const remainingSeconds = totalSeconds % 60
@@ -56,25 +90,48 @@ function Run() {
     return `${paddedMinutes}:${paddedSeconds}`
   }
 
+  const calculatePace = () => {
+    if (distance === 0) {
+      return "0'00\""
+    }
+
+    const paceInSeconds = seconds / distance
+    const paceMinutes = Math.floor(paceInSeconds / 60)
+    const paceSeconds = Math.floor(paceInSeconds % 60)
+    const paddedPaceSeconds = String(paceSeconds).padStart(2, '0')
+
+    return `${paceMinutes}'${paddedPaceSeconds}"`
+  }
+
   return (
     <main className="run-page" role="main" aria-label="Carrera en curso">
 
       <header className="run-header">
-        <span className="live-badge">TIEMPO DE CARRERA</span>
-        <div className="time-display" aria-label="Tiempo transcurrido">
-          {formatTime(seconds)}
+        <span className="live-badge">DISTANCIA RECORRIDA</span>
+        <div className="distance-display" aria-label="Distancia recorrida">
+          {distance.toFixed(2)}
         </div>
+        <span className="distance-label">kilómetros</span>
       </header>
 
-      <section className="gps-info" aria-label="Información de GPS">
-        {gpsError ? (
-          <p className="gps-error" role="alert">{gpsError}</p>
-        ) : (
-          <p className="gps-points">
-            Puntos GPS registrados: {positions.length}
-          </p>
-        )}
+      <section className="live-stats" aria-label="Estadísticas en directo">
+        <div className="live-stat">
+          <span className="live-value">{calculatePace()}</span>
+          <span className="live-label">ritmo/km</span>
+        </div>
+        <div className="live-stat">
+          <span className="live-value">{formatTime(seconds)}</span>
+          <span className="live-label">tiempo</span>
+        </div>
+        <div className="live-stat">
+          <span className="live-value">{positions.length}</span>
+          <span className="live-label">puntos GPS</span>
+        </div>
       </section>
+
+      {gpsError && (
+        <p className="gps-error" role="alert">{gpsError}</p>
+      )}
 
       <button
         type="button"
@@ -82,7 +139,7 @@ function Run() {
         onClick={() => setIsRunning(!isRunning)}
         aria-label={isRunning ? 'Pausar carrera' : 'Reanudar carrera'}
       >
-        {isRunning ? 'Pausar' : 'Reanudar carrera'}
+        {isRunning ? 'Pausar carrera' : 'Reanudar carrera'}
       </button>
 
       <button

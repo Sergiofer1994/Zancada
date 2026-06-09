@@ -25,16 +25,57 @@
   margin-bottom: 12px;
 }
 
-.run-page .time-display {
+.run-page .distance-display {
   color: #ffffff;
   font-size: 56px;
   font-weight: 500;
   line-height: 1;
 }
 
-.run-page .time-label {
+.run-page .distance-label {
   color: rgba(255, 255, 255, 0.7);
   font-size: 13px;
+}
+
+.run-page .live-stats {
+  display: flex;
+  background: #ffffff;
+  border: 1px solid #d0d0d0;
+  border-radius: 12px;
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+.run-page .live-stat {
+  flex: 1;
+  padding: 14px 8px;
+  text-align: center;
+  border-right: 1px solid #d0d0d0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.run-page .live-stat:last-child {
+  border-right: none;
+}
+
+.run-page .live-value {
+  color: #333;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.run-page .live-label {
+  color: #888;
+  font-size: 10px;
+}
+
+.run-page .gps-error {
+  color: #E24B4A;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 16px;
 }
 
 .run-page .pause-button {
@@ -67,18 +108,4 @@
 .run-page .stop-button:focus {
   outline: 3px solid #5DCAA5;
   outline-offset: 2px;
-}
-.run-page .gps-info {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.run-page .gps-points {
-  color: #5DCAA5;
-  font-size: 14px;
-}
-
-.run-page .gps-error {
-  color: #E24B4A;
-  font-size: 14px;
 }
