@@ -41,7 +41,7 @@
   width: 100%;
   padding: 14px;
   background: #ffffff;
-  color: #333;
+  color: #1D9E75;
   border: 1px solid #d0d0d0;
   border-radius: 12px;
   font-size: 15px;
@@ -53,9 +53,9 @@
 .run-page .stop-button {
   width: 100%;
   padding: 14px;
-  background: transparent;
+  background: #ffffff;
   color: #E24B4A;
-  border: 2px solid #E24B4A;
+  border: 1px solid #d0d0d0;
   border-radius: 12px;
   font-size: 15px;
   font-weight: 500;
@@ -67,4 +67,18 @@
 .run-page .stop-button:focus {
   outline: 3px solid #5DCAA5;
   outline-offset: 2px;
+}
+.run-page .gps-info {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.run-page .gps-points {
+  color: #5DCAA5;
+  font-size: 14px;
+}
+
+.run-page .gps-error {
+  color: #E24B4A;
+  font-size: 14px;
 }
