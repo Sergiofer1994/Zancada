@@ -1,0 +1,26 @@
+.map-wrapper {
+  margin-top: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  height: 220px;
+}
+
+.route-map {
+  height: 100%;
+  width: 100%;
+}
+
+.map-placeholder {
+  margin-top: 20px;
+  border-radius: 12px;
+  height: 220px;
+  background: #2c2c2e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.map-placeholder p {
+  color: #888;
+  font-size: 13px;
+}

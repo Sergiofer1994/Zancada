@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import RouteMap from '../RouteMap/RouteMap.jsx'
 import './Run.css'
 
 function Run() {
@@ -128,6 +129,8 @@ function Run() {
           <span className="live-label">puntos GPS</span>
         </div>
       </section>
+
+      <RouteMap positions={positions} />
 
       {gpsError && (
         <p className="gps-error" role="alert">{gpsError}</p>
