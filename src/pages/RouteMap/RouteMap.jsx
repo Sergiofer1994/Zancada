@@ -31,14 +31,14 @@ function RouteMap({ positions }) {
         />
         <Polyline
           positions={routePoints}
-          pathOptions={{ color: '#1D9E75', weight: 5 }}
+          pathOptions={{ color: '#A78BFA', weight: 5 }}
         />
         <CircleMarker
           center={currentPosition}
           radius={8}
           pathOptions={{
             color: '#ffffff',
-            fillColor: '#1D9E75',
+            fillColor: '#A78BFA',
             fillOpacity: 1,
             weight: 3,
           }}

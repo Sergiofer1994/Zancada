@@ -41,8 +41,11 @@ function Login() {
 
   return (
     <main className="auth-page" role="main" aria-label="Pantalla de inicio de sesión">
-      <h1>Zancada</h1>
-      <p>Tu compañero de carrera</p>
+      <h1>
+        Corre.<br />
+        Registra.<br />
+        Supérate.
+      </h1>
 
       <form onSubmit={handleSubmit} aria-label="Formulario de inicio de sesión">
 

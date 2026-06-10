@@ -1,111 +1,144 @@
-.run-page {
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: linear-gradient(160deg, #0D0D14 0%, #131329 50%, #0D0D14 100%);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+main {
   max-width: 400px;
   margin: 0 auto;
-  background: #e5e5e5;
   min-height: 100vh;
-  padding: 0 16px 40px;
+  padding: 24px 16px 40px;
   display: flex;
   flex-direction: column;
 }
 
-.run-page .run-header {
-  background: #0f6e56;
-  margin: 0 -16px;
-  padding: 24px 16px;
-  text-align: center;
+.run-header {
+  text-align: left;
+  padding: 0;
+  margin: 0;
+  background: transparent;
 }
 
-.run-page .live-badge {
-  display: inline-block;
-  background: rgba(255, 255, 255, 0.2);
+.live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 20px;
-  padding: 3px 12px;
-  color: #ffffff;
-  font-size: 11px;
-  margin-bottom: 12px;
+  padding: 5px 12px;
+  color: #C4B5FD;
+  font-size: 10px;
+  letter-spacing: 0.8px;
+  margin-bottom: 0;
 }
 
-.run-page .distance-display {
-  color: #ffffff;
-  font-size: 56px;
-  font-weight: 500;
+.live-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #A78BFA;
+}
+
+.distance-display {
+  font-size: 64px;
+  font-weight: 800;
+  letter-spacing: -3px;
   line-height: 1;
+  margin-top: 18px;
+  background: linear-gradient(90deg, #ffffff 30%, #A78BFA 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
-.run-page .distance-label {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 13px;
+.distance-label {
+  color: #6B7280;
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
 }
 
-.run-page .live-stats {
+.live-stats {
   display: flex;
-  background: #ffffff;
-  border: 1px solid #d0d0d0;
-  border-radius: 12px;
+  gap: 8px;
+  background: transparent;
+  border-radius: 0;
   margin-top: 20px;
-  overflow: hidden;
+  overflow: visible;
 }
 
-.run-page .live-stat {
+.live-stat {
   flex: 1;
-  padding: 14px 8px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 13px 6px;
   text-align: center;
-  border-right: 1px solid #d0d0d0;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.run-page .live-stat:last-child {
-  border-right: none;
+.live-value {
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
 }
 
-.run-page .live-value {
-  color: #333;
-  font-size: 16px;
-  font-weight: 500;
+.live-label {
+  color: #6B7280;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.run-page .live-label {
-  color: #888;
-  font-size: 10px;
-}
-
-.run-page .gps-error {
-  color: #E24B4A;
-  font-size: 14px;
+.gps-error {
+  color: #F87171;
+  font-size: 13px;
   text-align: center;
   margin-top: 16px;
 }
 
-.run-page .pause-button {
+.pause-button {
   width: 100%;
-  padding: 14px;
-  background: #ffffff;
-  color: #1D9E75;
-  border: 1px solid #d0d0d0;
-  border-radius: 12px;
-  font-size: 15px;
-  font-weight: 500;
+  padding: 15px;
+  background: linear-gradient(135deg, #A78BFA, #7C4DFF);
+  color: #ffffff;
+  border: none;
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 700;
   cursor: pointer;
-  margin-top: 24px;
+  margin-top: 20px;
+  box-shadow: 0 0 24px rgba(124, 77, 255, 0.3);
 }
 
-.run-page .stop-button {
+.stop-button {
   width: 100%;
   padding: 14px;
-  background: #ffffff;
-  color: #E24B4A;
-  border: 1px solid #d0d0d0;
-  border-radius: 12px;
-  font-size: 15px;
-  font-weight: 500;
+  background: rgba(255, 255, 255, 0.05);
+  color: #F87171;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
-  margin-top: 12px;
+  margin-top: 10px;
 }
 
-.run-page .pause-button:focus,
-.run-page .stop-button:focus {
-  outline: 3px solid #5DCAA5;
+.pause-button:focus,
+.stop-button:focus {
+  outline: 3px solid #A78BFA;
   outline-offset: 2px;
 }

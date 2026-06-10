@@ -5,10 +5,10 @@ nav {
   right: 0;
   max-width: 400px;
   margin: 0 auto;
-  background: #e5e5e5;
-  border-top: 0.5px solid #2c2c2e;
+  background: rgba(19, 19, 41, 0.85);
+  backdrop-filter: blur(16px);
   display: flex;
-  padding: 8px 0 12px;
+  padding: 10px 0 14px;
 }
 
 .nav-item {
@@ -29,14 +29,16 @@ nav {
 
 .nav-label {
   font-size: 9px;
-  color: #666;
+  color: #4B5563;
+  white-space: nowrap;
 }
 
 .nav-item.active .nav-label {
-  color: #1D9E75;
+  color: #A78BFA;
+  font-weight: 600;
 }
 
 .nav-item:focus {
-  outline: 2px solid #1D9E75;
+  outline: 2px solid #A78BFA;
   border-radius: 8px;
 }
