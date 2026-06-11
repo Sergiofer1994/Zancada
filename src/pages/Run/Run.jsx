@@ -31,11 +31,29 @@ function Run() {
 
     const watchId = navigator.geolocation.watchPosition(
       (position) => {
+        if (position.coords.accuracy > 50) {
+          return
+        }
+
         const newPoint = {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
         }
-        setPositions((prev) => [...prev, newPoint])
+
+        setPositions((prev) => {
+          if (prev.length === 0) {
+            return [newPoint]
+          }
+
+          const lastPoint = prev[prev.length - 1]
+          const distanceFromLast = calculateDistance(lastPoint, newPoint)
+
+          if (distanceFromLast < 0.01) {
+            return prev
+          }
+
+          return [...prev, newPoint]
+        })
         setGpsError('')
       },
       () => {
@@ -105,7 +123,7 @@ function Run() {
   }
 
   return (
-    <main className="run-page" role="main" aria-label="Carrera en curso">
+    <main role="main" aria-label="Carrera en curso">
 
       <header className="run-header">
         <span className="live-badge">DISTANCIA RECORRIDA</span>
