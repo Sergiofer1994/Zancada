@@ -43,30 +43,6 @@ function Login() {
     <main role="main" aria-label="Pantalla de inicio de sesión">
 
       <section className="hero" aria-hidden="true">
-        <svg
-          className="hero-route"
-          viewBox="0 0 400 220"
-          preserveAspectRatio="xMidYMid slice"
-        >
-          <path
-            d="M0,180 Q70,130 140,150 T280,105 T400,85"
-            fill="none"
-            stroke="#9F7AFF"
-            strokeWidth="3"
-            opacity="0.85"
-            strokeLinecap="round"
-          />
-          <path
-            d="M0,200 Q90,170 180,180 T340,140 T400,130"
-            fill="none"
-            stroke="#9F7AFF"
-            strokeWidth="2"
-            opacity="0.3"
-            strokeLinecap="round"
-          />
-          <circle cx="352" cy="92" r="6" fill="#9F7AFF" />
-          <circle cx="352" cy="92" r="12" fill="#9F7AFF" opacity="0.25" />
-        </svg>
         <h1 className="hero-title">
           Cada zancada<br />
           <span className="highlight">cuenta.</span>
@@ -119,7 +95,7 @@ function Login() {
           </button>
 
           <p className="register-link">
-            ¿Sin cuenta?{' '}
+            Aún no tienes cuenta{' '}
             <button
               type="button"
               className="link-button"
