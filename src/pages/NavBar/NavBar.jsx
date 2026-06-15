@@ -1,4 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom'
+import { Home, List, BarChart3, User } from 'lucide-react'
 import './NavBar.css'
 
 function NavBar() {
@@ -16,7 +17,7 @@ function NavBar() {
         aria-label="Ir a inicio"
         aria-current={isActive('/home') ? 'page' : undefined}
       >
-        <span className="nav-icon">🏠</span>
+        <Home className="nav-icon" size={20} aria-hidden="true" />
         <span className="nav-label">Inicio</span>
       </button>
 
@@ -27,7 +28,7 @@ function NavBar() {
         aria-label="Ir a historial"
         aria-current={isActive('/history') ? 'page' : undefined}
       >
-        <span className="nav-icon">📋</span>
+        <List className="nav-icon" size={20} aria-hidden="true" />
         <span className="nav-label">Historial</span>
       </button>
 
@@ -38,7 +39,7 @@ function NavBar() {
         aria-label="Ir a estadísticas"
         aria-current={isActive('/stats') ? 'page' : undefined}
       >
-        <span className="nav-icon">📊</span>
+        <BarChart3 className="nav-icon" size={20} aria-hidden="true" />
         <span className="nav-label">Estadísticas</span>
       </button>
 
@@ -49,7 +50,7 @@ function NavBar() {
         aria-label="Ir a perfil"
         aria-current={isActive('/profile') ? 'page' : undefined}
       >
-        <span className="nav-icon">👤</span>
+        <User className="nav-icon" size={20} aria-hidden="true" />
         <span className="nav-label">Perfil</span>
       </button>
     </nav>
