@@ -1,0 +1,134 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: linear-gradient(160deg, #0D0D14 0%, #131329 50%, #0D0D14 100%);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+main {
+  max-width: 400px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 24px 16px 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.summary-header {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.summary-badge {
+  display: inline-block;
+  background: rgba(159, 122, 255, 0.12);
+  border: 1px solid rgba(159, 122, 255, 0.3);
+  border-radius: 20px;
+  padding: 5px 14px;
+  color: #C4B5FD;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+
+.summary-distance {
+  font-size: 64px;
+  font-weight: 800;
+  letter-spacing: -3px;
+  line-height: 1;
+  background: linear-gradient(90deg, #ffffff 30%, #9F7AFF 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.summary-unit {
+  color: #6B7280;
+  font-size: 13px;
+}
+
+.summary-stats {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.summary-stat {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 14px 6px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.summary-value {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.summary-label {
+  color: #6B7280;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.save-button {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #A78BFA, #7C4DFF);
+  color: #ffffff;
+  border: none;
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: 20px;
+  box-shadow: 0 0 24px rgba(124, 77, 255, 0.35);
+}
+
+.discard-button {
+  width: 100%;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #9CA3AF;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.save-button:focus,
+.discard-button:focus {
+  outline: 3px solid #9F7AFF;
+  outline-offset: 2px;
+}
+
+.summary-empty {
+  align-items: center;
+  justify-content: center;
+  color: #9CA3AF;
+  gap: 16px;
+}
+
+.summary-empty button {
+  padding: 12px 24px;
+  background: #9F7AFF;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}

@@ -169,7 +169,14 @@ function Run() {
         aria-label="Finalizar carrera"
         onClick={() => {
           setIsRunning(false)
-          navigate('/home')
+          navigate('/summary', {
+            state: {
+              distance: distance,
+              seconds: seconds,
+              pace: calculatePace(),
+              positions: positions,
+            },
+          })
         }}
       >
         Finalizar carrera
