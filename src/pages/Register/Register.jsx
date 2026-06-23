@@ -36,7 +36,7 @@ function Register() {
     return newErrors
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
     const foundErrors = validate()
 
@@ -46,10 +46,30 @@ function Register() {
     }
 
     setErrors({})
-    console.log('Nombre:', name)
-    console.log('Género:', gender)
-    console.log('Email:', email)
-    console.log('Contraseña:', password)
+
+    try {
+      const response = await fetch('http://localhost:8080/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ name, email, password, gender })
+      })
+
+      if (response.ok) {
+        navigate('/')
+        return
+      }
+
+      if (response.status === 409 || response.status === 500) {
+        setErrors({ email: 'Este email ya está registrado' })
+        return
+      }
+
+      setErrors({ email: 'No se pudo completar el registro' })
+    } catch (error) {
+      setErrors({ email: 'No se pudo conectar con el servidor' })
+    }
   }
 
   return (
