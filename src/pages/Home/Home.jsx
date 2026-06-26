@@ -1,19 +1,45 @@
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import NavBar from '../NavBar/NavBar.jsx'
 import './Home.css'
 
 function Home() {
   const navigate = useNavigate()
+  const [user, setUser] = useState(null)
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user')
+
+    if (!storedUser) {
+      navigate('/')
+      return
+    }
+
+    setUser(JSON.parse(storedUser))
+  }, [navigate])
+
+  const getInitials = (name) => {
+    return name
+      .trim()
+      .split(' ')
+      .slice(0, 2)
+      .map((word) => word.charAt(0).toUpperCase())
+      .join('')
+  }
+
+  if (!user) {
+    return null
+  }
 
   return (
     <main className="home-page" role="main" aria-label="Pantalla de inicio">
 
       <header>
         <div>
-          <h1>Bienvenido/a, Carlos</h1>
+          <h1>Bienvenido/a, {user.name}</h1>
         </div>
         <div className="avatar" aria-label="Avatar del usuario">
-          CA
+          {getInitials(user.name)}
         </div>
       </header>
 
