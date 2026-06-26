@@ -6,6 +6,7 @@ function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState({})
+  const [generalError, setGeneralError] = useState('')
   const navigate = useNavigate()
 
   const validate = () => {
@@ -26,8 +27,9 @@ function Login() {
     return newErrors
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
+    setGeneralError('')
     const foundErrors = validate()
 
     if (Object.keys(foundErrors).length > 0) {
@@ -36,7 +38,25 @@ function Login() {
     }
 
     setErrors({})
-    navigate('/home')
+
+    try {
+      const response = await fetch('http://localhost:8080/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      })
+
+      if (!response.ok) {
+        setGeneralError('Email o contraseña incorrectos')
+        return
+      }
+
+      const user = await response.json()
+      localStorage.setItem('user', JSON.stringify(user))
+      navigate('/home')
+    } catch {
+      setGeneralError('No se pudo conectar con el servidor')
+    }
   }
 
   return (
@@ -51,6 +71,12 @@ function Login() {
 
       <section className="form-body">
         <form onSubmit={handleSubmit} aria-label="Formulario de inicio de sesión">
+
+          {generalError && (
+            <div role="alert" className="general-error">
+              {generalError}
+            </div>
+          )}
 
           <label htmlFor="email">Email</label>
           <input
