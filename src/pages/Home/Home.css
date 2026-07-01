@@ -147,3 +147,10 @@ li {
   text-align: right;
   display: block;
 }
+
+.no-runs {
+  color: #8B8B96;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 1rem 0;
+}

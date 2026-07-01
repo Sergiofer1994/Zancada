@@ -6,6 +6,7 @@ import './Home.css'
 function Home() {
   const navigate = useNavigate()
   const [user, setUser] = useState(null)
+  const [runs, setRuns] = useState([])
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user')
@@ -15,8 +16,25 @@ function Home() {
       return
     }
 
-    setUser(JSON.parse(storedUser))
+    const parsedUser = JSON.parse(storedUser)
+    setUser(parsedUser)
+    loadRuns(parsedUser.id)
   }, [navigate])
+
+  const loadRuns = async (userId) => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/runs/user/${userId}`)
+
+      if (!response.ok) {
+        return
+      }
+
+      const data = await response.json()
+      setRuns(data)
+    } catch {
+      setRuns([])
+    }
+  }
 
   const getInitials = (name) => {
     return name
@@ -25,6 +43,48 @@ function Home() {
       .slice(0, 2)
       .map((word) => word.charAt(0).toUpperCase())
       .join('')
+  }
+
+  const getTotalDistance = () => {
+    return runs.reduce((total, run) => total + run.distance, 0)
+  }
+
+  const getTotalSeconds = () => {
+    return runs.reduce((total, run) => total + run.seconds, 0)
+  }
+
+  const getAveragePace = () => {
+    const totalDistance = getTotalDistance()
+
+    if (totalDistance === 0) {
+      return "0'00\""
+    }
+
+    const paceInSeconds = getTotalSeconds() / totalDistance
+    const paceMinutes = Math.floor(paceInSeconds / 60)
+    const paceSeconds = Math.floor(paceInSeconds % 60)
+    const paddedPaceSeconds = String(paceSeconds).padStart(2, '0')
+
+    return `${paceMinutes}'${paddedPaceSeconds}"`
+  }
+
+  const formatRunDate = (createdAt) => {
+    const date = new Date(createdAt)
+    const day = String(date.getDate()).padStart(2, '0')
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const hours = String(date.getHours()).padStart(2, '0')
+    const minutes = String(date.getMinutes()).padStart(2, '0')
+
+    return `${day}/${month}, ${hours}:${minutes}`
+  }
+
+  const formatRunTime = (totalSeconds) => {
+    const minutes = Math.floor(totalSeconds / 60)
+    const seconds = totalSeconds % 60
+    const paddedMinutes = String(minutes).padStart(2, '0')
+    const paddedSeconds = String(seconds).padStart(2, '0')
+
+    return `${paddedMinutes}:${paddedSeconds}`
   }
 
   if (!user) {
@@ -46,15 +106,15 @@ function Home() {
       <section aria-label="Estadísticas del mes">
         <div className="stats-row">
           <div className="stat-box">
-            <span className="stat-value">42.1</span>
-            <span className="stat-label">km este mes</span>
+            <span className="stat-value">{getTotalDistance().toFixed(1)}</span>
+            <span className="stat-label">km totales</span>
           </div>
           <div className="stat-box">
-            <span className="stat-value">5:12</span>
+            <span className="stat-value">{getAveragePace()}</span>
             <span className="stat-label">ritmo medio</span>
           </div>
           <div className="stat-box">
-            <span className="stat-value">6</span>
+            <span className="stat-value">{runs.length}</span>
             <span className="stat-label">salidas</span>
           </div>
         </div>
@@ -71,28 +131,24 @@ function Home() {
 
       <section aria-label="Últimas carreras">
         <h2>Últimas carreras</h2>
-        <ul>
-          <li>
-            <div>
-              <span className="run-date">Hoy, 07:30</span>
-              <span className="run-name">Ruta del parque</span>
-            </div>
-            <div>
-              <span className="run-km">8.4 km</span>
-              <span className="run-time">44:12</span>
-            </div>
-          </li>
-          <li>
-            <div>
-              <span className="run-date">Mar, 06:50</span>
-              <span className="run-name">Salida matutina</span>
-            </div>
-            <div>
-              <span className="run-km">5.2 km</span>
-              <span className="run-time">27:40</span>
-            </div>
-          </li>
-        </ul>
+        {runs.length === 0 ? (
+          <p className="no-runs">Aún no has registrado ninguna carrera.</p>
+        ) : (
+          <ul>
+            {runs.map((run) => (
+              <li key={run.id}>
+                <div>
+                  <span className="run-date">{formatRunDate(run.createdAt)}</span>
+                  <span className="run-name">Carrera</span>
+                </div>
+                <div>
+                  <span className="run-km">{run.distance.toFixed(1)} km</span>
+                  <span className="run-time">{formatRunTime(run.seconds)}</span>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
       <NavBar />

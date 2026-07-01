@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import RouteMap from '../RouteMap/RouteMap.jsx'
 import './Summary.css'
@@ -5,6 +6,8 @@ import './Summary.css'
 function Summary() {
   const location = useLocation()
   const navigate = useNavigate()
+  const [isSaving, setIsSaving] = useState(false)
+  const [saveError, setSaveError] = useState('')
 
   const data = location.state
 
@@ -37,6 +40,42 @@ function Summary() {
     return Math.round(data.distance * caloriesPerKm)
   }
 
+  const handleSave = async () => {
+    const storedUser = localStorage.getItem('user')
+
+    if (!storedUser) {
+      navigate('/')
+      return
+    }
+
+    const user = JSON.parse(storedUser)
+    setIsSaving(true)
+    setSaveError('')
+
+    try {
+      const response = await fetch('http://localhost:8080/api/runs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: user.id,
+          distance: data.distance,
+          seconds: data.seconds
+        })
+      })
+
+      if (!response.ok) {
+        setSaveError('No se pudo guardar la carrera')
+        setIsSaving(false)
+        return
+      }
+
+      navigate('/home')
+    } catch {
+      setSaveError('No se pudo conectar con el servidor')
+      setIsSaving(false)
+    }
+  }
+
   return (
     <main role="main" aria-label="Resumen de la carrera">
 
@@ -63,12 +102,17 @@ function Summary() {
 
       <RouteMap positions={data.positions} />
 
+      {saveError && (
+        <p className="save-error" role="alert">{saveError}</p>
+      )}
+
       <button
         type="button"
         className="save-button"
-        onClick={() => navigate('/home')}
+        onClick={handleSave}
+        disabled={isSaving}
       >
-        Guardar carrera
+        {isSaving ? 'Guardando...' : 'Guardar carrera'}
       </button>
 
       <button
