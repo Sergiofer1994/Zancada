@@ -1,0 +1,114 @@
+.creator-page {
+  max-width: 420px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #0B0B0F;
+  padding: 24px;
+}
+
+.creator-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.creator-header h1 {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.creator-distance {
+  color: #9F7AFF;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.creator-map-wrapper {
+  height: 55vh;
+  min-height: 380px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.creator-map {
+  height: 100%;
+  width: 100%;
+}
+
+.creator-hint {
+  color: #8B8B96;
+  font-size: 12px;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.creator-name {
+  width: 100%;
+  padding: 13px 14px;
+  border-radius: 12px;
+  border: 1px solid #232330;
+  background: #15151C;
+  font-size: 14px;
+  color: #ffffff;
+  outline: none;
+  margin-bottom: 12px;
+}
+
+.creator-error {
+  color: #f87171;
+  font-size: 13px;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.creator-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.undo-button,
+.save-route-button {
+  flex: 1;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.undo-button {
+  background: #232330;
+  color: #ffffff;
+}
+
+.undo-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.save-route-button {
+  background: #9F7AFF;
+  color: #ffffff;
+}
+
+.cancel-button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  background: transparent;
+  color: #8B8B96;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.creator-map-wrapper .leaflet-control-attribution {
+  font-size: 8px;
+  opacity: 0.4;
+  background: rgba(255, 255, 255, 0.5);
+}

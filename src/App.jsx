@@ -1,20 +1,39 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Login from './pages/Login/Login.jsx'
 import Register from './pages/Register/Register.jsx'
 import Home from './pages/Home/Home.jsx'
 import Run from './pages/Run/Run.jsx'
 import Summary from './pages/Summary/Summary.jsx'
+import RoutesList from './pages/Routes/RoutesList.jsx'
+import RouteCreator from './pages/Routes/RouteCreator.jsx'
+import NavBar from './pages/NavBar/NavBar.jsx'
 
-function App() {
+const NAVBAR_PATHS = ['/home', '/history', '/routes', '/stats', '/profile']
+
+function AppShell() {
+  const location = useLocation()
+  const showNavBar = NAVBAR_PATHS.includes(location.pathname)
+
   return (
-    <BrowserRouter>
+    <>
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/home" element={<Home />} />
         <Route path="/run" element={<Run />} />
         <Route path="/summary" element={<Summary />} />
+        <Route path="/routes" element={<RoutesList />} />
+        <Route path="/routes/new" element={<RouteCreator />} />
       </Routes>
+      {showNavBar && <NavBar />}
+    </>
+  )
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppShell />
     </BrowserRouter>
   )
 }
