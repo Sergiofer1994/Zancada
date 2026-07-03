@@ -6,6 +6,7 @@ import Run from './pages/Run/Run.jsx'
 import Summary from './pages/Summary/Summary.jsx'
 import RoutesList from './pages/Routes/RoutesList.jsx'
 import RouteCreator from './pages/Routes/RouteCreator.jsx'
+import RouteViewer from './pages/Routes/RouteViewer.jsx'
 import NavBar from './pages/NavBar/NavBar.jsx'
 
 const NAVBAR_PATHS = ['/home', '/history', '/routes', '/stats', '/profile']
@@ -24,6 +25,7 @@ function AppShell() {
         <Route path="/summary" element={<Summary />} />
         <Route path="/routes" element={<RoutesList />} />
         <Route path="/routes/new" element={<RouteCreator />} />
+        <Route path="/routes/:id" element={<RouteViewer />} />
       </Routes>
       {showNavBar && <NavBar />}
     </>
