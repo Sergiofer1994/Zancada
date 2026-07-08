@@ -117,3 +117,49 @@
   font-weight: 600;
   cursor: pointer;
 }
+
+.routes-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.nearby-button {
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #7c5cff;
+  background: transparent;
+  color: #7c5cff;
+  cursor: pointer;
+}
+
+.nearby-button.active {
+  background: #7c5cff;
+  color: #ffffff;
+}
+
+.location-error {
+  color: #e05353;
+  margin-top: 0.5rem;
+}
+
+.routes-filters {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin: 1rem 0;
+}
+
+.filter-button {
+  padding: 0.5rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid #7c5cff;
+  background: transparent;
+  color: #7c5cff;
+  cursor: pointer;
+}
+
+.filter-button.active {
+  background: #7c5cff;
+  color: #ffffff;
+}
