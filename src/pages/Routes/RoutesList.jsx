@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './Routes.css'
 
-const NEARBY_RADIUS_KM = 10
+const NEARBY_RADIUS_KM = 25
 
 const VIEW_ALL = 'all'
 const VIEW_MINE_NEARBY = 'mineNearby'
