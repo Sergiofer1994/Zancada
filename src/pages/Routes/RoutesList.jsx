@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import apiBaseUrl from '../../config/apiConfig'
 import './Routes.css'
 
 const NEARBY_RADIUS_KM = 25
@@ -31,7 +32,7 @@ function RoutesList() {
 
   const loadRoutes = async (userId) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/routes/user/${userId}`)
+      const response = await fetch(`${apiBaseUrl}/api/routes/user/${userId}`)
 
       if (!response.ok) {
         return
@@ -77,11 +78,11 @@ function RoutesList() {
   }
 
   const showMineNearby = () => {
-    loadNearbyRoutes(`http://localhost:8080/api/routes/nearby/user/${user.id}`, VIEW_MINE_NEARBY)
+    loadNearbyRoutes(`${apiBaseUrl}/api/routes/nearby/user/${user.id}`, VIEW_MINE_NEARBY)
   }
 
   const showDiscover = () => {
-    loadNearbyRoutes('http://localhost:8080/api/routes/nearby', VIEW_DISCOVER)
+    loadNearbyRoutes(`${apiBaseUrl}/api/routes/nearby`, VIEW_DISCOVER)
   }
 
   if (!user) {

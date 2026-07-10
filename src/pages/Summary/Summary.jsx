@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import RouteMap from '../RouteMap/RouteMap.jsx'
+import apiBaseUrl from '../../config/apiConfig'
 import './Summary.css'
 
 function Summary() {
@@ -53,7 +54,7 @@ function Summary() {
     setSaveError('')
 
     try {
-      const response = await fetch('http://localhost:8080/api/runs', {
+      const response = await fetch(`${apiBaseUrl}/api/runs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

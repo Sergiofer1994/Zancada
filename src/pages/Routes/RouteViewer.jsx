@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { MapContainer, TileLayer, Polyline, CircleMarker } from 'react-leaflet'
+import apiBaseUrl from '../../config/apiConfig'
 import './RouteViewer.css'
 
 function RouteViewer() {
@@ -13,7 +14,7 @@ function RouteViewer() {
   useEffect(() => {
     const loadRoute = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/routes/${id}`)
+        const response = await fetch(`${apiBaseUrl}/api/routes/${id}`)
 
         if (!response.ok) {
           setNotFound(true)
