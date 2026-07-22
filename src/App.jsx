@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Login from './pages/Login/Login.jsx'
 import Register from './pages/Register/Register.jsx'
+import ForgotPassword from './pages/ForgotPassword/ForgotPassword.jsx'
+import ResetPassword from './pages/ResetPassword/ResetPassword.jsx'
 import Home from './pages/Home/Home.jsx'
 import Run from './pages/Run/Run.jsx'
 import Summary from './pages/Summary/Summary.jsx'
@@ -21,6 +23,8 @@ function AppShell() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/home" element={<Home />} />
         <Route path="/run" element={<Run />} />
         <Route path="/summary" element={<Summary />} />

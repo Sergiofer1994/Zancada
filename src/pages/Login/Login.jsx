@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import apiBaseUrl from '../../config/apiConfig'
 import './Login.css'
 
@@ -113,9 +113,9 @@ function Login() {
             </span>
           )}
 
-          <a href="#" aria-label="Recuperar contraseña olvidada">
+          <Link to="/forgot-password" aria-label="Recuperar contraseña olvidada">
             ¿Olvidaste tu contraseña?
-          </a>
+          </Link>
 
           <button type="submit">
             Iniciar sesión
