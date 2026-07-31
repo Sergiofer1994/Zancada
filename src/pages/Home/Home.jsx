@@ -98,8 +98,16 @@ function Home() {
         <div>
           <h1>Bienvenido/a, {user.name}</h1>
         </div>
-        <div className="avatar" aria-label="Avatar del usuario">
-          {getInitials(user.name)}
+        <div
+          className="avatar"
+          aria-label="Avatar del usuario"
+          onClick={() => navigate('/profile')}
+        >
+          {user.photoUrl ? (
+            <img src={user.photoUrl} alt="Foto de perfil" className="avatar-image" />
+          ) : (
+            getInitials(user.name)
+          )}
         </div>
       </header>
 
