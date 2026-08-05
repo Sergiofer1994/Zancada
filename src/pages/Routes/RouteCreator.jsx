@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { MapContainer, TileLayer, Polyline, CircleMarker, useMapEvents } from 'react-leaflet'
-import apiBaseUrl from '../../config/apiConfig'
+import apiClient from '../../config/apiClient'
 import './RouteCreator.css'
 
 function ClickCapture({ onAddPoint }) {
@@ -92,7 +92,7 @@ function RouteCreator() {
     setError('')
 
     try {
-      const response = await fetch(`${apiBaseUrl}/api/routes`, {
+      const response = await apiClient('/api/routes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

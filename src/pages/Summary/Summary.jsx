@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import RouteMap from '../RouteMap/RouteMap.jsx'
-import apiBaseUrl from '../../config/apiConfig'
+import apiClient from '../../config/apiClient'
 import './Summary.css'
 
 function Summary() {

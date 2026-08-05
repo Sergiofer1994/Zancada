@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { MapContainer, TileLayer, Polyline, CircleMarker } from 'react-leaflet'
-import apiBaseUrl from '../../config/apiConfig'
+import apiClient from '../../config/apiClient'
 import './RouteViewer.css'
 
 function RouteViewer() {
