@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import apiBaseUrl from '../../config/apiConfig'
+import apiClient from '../../config/apiClient'
 import NavBar from '../NavBar/NavBar.jsx'
 import './Profile.css'
 
@@ -49,7 +49,7 @@ function Profile() {
     formData.append('file', file)
 
     try {
-      const response = await fetch(`${apiBaseUrl}/api/users/${user.id}/photo`, {
+      const response = await apiClient(`/api/users/${user.id}/photo`, {
         method: 'POST',
         body: formData
       })

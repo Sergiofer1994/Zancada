@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import apiBaseUrl from '../../config/apiConfig'
+import apiClient from '../../config/apiClient'
 import './Home.css'
 
 function Home() {
@@ -23,7 +23,7 @@ function Home() {
 
   const loadRuns = async (userId) => {
     try {
-      const response = await fetch(`${apiBaseUrl}/api/runs/user/${userId}`)
+      const response = await apiClient(`/api/runs/user/${userId}`)
 
       if (!response.ok) {
         return

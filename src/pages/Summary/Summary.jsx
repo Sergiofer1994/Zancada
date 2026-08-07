@@ -54,7 +54,7 @@ function Summary() {
     setSaveError('')
 
     try {
-      const response = await fetch(`${apiBaseUrl}/api/runs`, {
+      const response = await apiClient('/api/runs', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

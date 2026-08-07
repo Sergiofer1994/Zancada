@@ -14,7 +14,7 @@ function RouteViewer() {
   useEffect(() => {
     const loadRoute = async () => {
       try {
-        const response = await fetch(`${apiBaseUrl}/api/routes/${id}`)
+        const response = await apiClient(`/api/routes/${id}`)
 
         if (!response.ok) {
           setNotFound(true)
