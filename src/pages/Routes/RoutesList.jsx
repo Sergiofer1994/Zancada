@@ -56,8 +56,9 @@ function RoutesList() {
     try {
       const position = await getCurrentPosition()
       const { latitude, longitude } = position.coords
+      const separator = endpoint.includes('?') ? '&' : '?'
       const response = await apiClient(
-        `${endpoint}?latitude=${latitude}&longitude=${longitude}&radiusKm=${NEARBY_RADIUS_KM}`
+        `${endpoint}${separator}latitude=${latitude}&longitude=${longitude}&radiusKm=${NEARBY_RADIUS_KM}`
       )
 
       if (!response.ok) {
@@ -82,7 +83,7 @@ function RoutesList() {
   }
 
   const showDiscover = () => {
-    loadNearbyRoutes('/api/routes/nearby', VIEW_DISCOVER)
+    loadNearbyRoutes(`/api/routes/nearby?userId=${user.id}`, VIEW_DISCOVER)
   }
 
   if (!user) {

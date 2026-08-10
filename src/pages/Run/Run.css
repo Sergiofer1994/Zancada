@@ -142,3 +142,8 @@ main {
   outline: 3px solid #A78BFA;
   outline-offset: 2px;
 }
+
+.gps-status {
+  color: #9ca3af;
+  text-align: center;
+}

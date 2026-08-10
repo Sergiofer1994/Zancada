@@ -3,11 +3,15 @@ import { useNavigate } from 'react-router-dom'
 import RouteMap from '../RouteMap/RouteMap.jsx'
 import './Run.css'
 
+const ACCURACY_THRESHOLD_METERS = 50
+const MIN_SEGMENT_KM = 0.01
+
 function Run() {
   const [seconds, setSeconds] = useState(0)
   const [isRunning, setIsRunning] = useState(true)
   const [positions, setPositions] = useState([])
   const [distance, setDistance] = useState(0)
+  const [gpsStatus, setGpsStatus] = useState('searching')
   const [gpsError, setGpsError] = useState('')
   const navigate = useNavigate()
 
@@ -25,13 +29,15 @@ function Run() {
 
   useEffect(() => {
     if (!navigator.geolocation) {
+      setGpsStatus('error')
       setGpsError('Tu navegador no soporta geolocalización')
       return
     }
 
     const watchId = navigator.geolocation.watchPosition(
       (position) => {
-        if (position.coords.accuracy > 50) {
+        if (position.coords.accuracy > ACCURACY_THRESHOLD_METERS) {
+          setGpsStatus('searching')
           return
         }
 
@@ -48,20 +54,29 @@ function Run() {
           const lastPoint = prev[prev.length - 1]
           const distanceFromLast = calculateDistance(lastPoint, newPoint)
 
-          if (distanceFromLast < 0.01) {
+          if (distanceFromLast < MIN_SEGMENT_KM) {
             return prev
           }
 
           return [...prev, newPoint]
         })
+        setGpsStatus('active')
         setGpsError('')
       },
-      () => {
-        setGpsError('No se pudo acceder a tu ubicación')
+      (error) => {
+        if (error.code === error.PERMISSION_DENIED) {
+          setGpsStatus('error')
+          setGpsError('Permiso de ubicación denegado. Actívalo en los ajustes para registrar tu carrera.')
+          return
+        }
+
+        setGpsStatus('error')
+        setGpsError('No se pudo obtener tu ubicación. Asegúrate de estar al aire libre.')
       },
       {
         enableHighAccuracy: true,
         maximumAge: 0,
+        timeout: 15000,
       }
     )
 
@@ -149,6 +164,10 @@ function Run() {
       </section>
 
       <RouteMap positions={positions} />
+
+      {gpsStatus === 'searching' && !gpsError && (
+        <p className="gps-status" role="status">Buscando señal GPS…</p>
+      )}
 
       {gpsError && (
         <p className="gps-error" role="alert">{gpsError}</p>
