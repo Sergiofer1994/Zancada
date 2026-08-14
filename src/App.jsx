@@ -13,6 +13,7 @@ import RouteCreator from './pages/Routes/RouteCreator.jsx'
 import RouteViewer from './pages/Routes/RouteViewer.jsx'
 import Profile from './pages/Profile/Profile.jsx'
 import NavBar from './pages/NavBar/NavBar.jsx'
+import useBackendWarmup from './hooks/useBackendWarmup.js'
 
 const NAVBAR_PATHS = ['/home', '/history', '/routes', '/stats', '/profile']
 
@@ -43,6 +44,8 @@ function AppShell() {
 }
 
 function App() {
+  useBackendWarmup()
+
   return (
     <BrowserRouter>
       <AppShell />

@@ -3,11 +3,15 @@ import { useNavigate, Link } from 'react-router-dom'
 import apiBaseUrl from '../../config/apiConfig'
 import './Login.css'
 
+const WAKING_MESSAGE_DELAY_MS = 2500
+
 function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [errors, setErrors] = useState({})
   const [generalError, setGeneralError] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isWakingServer, setIsWakingServer] = useState(false)
   const navigate = useNavigate()
 
   const validate = () => {
@@ -39,6 +43,8 @@ function Login() {
     }
 
     setErrors({})
+    setIsSubmitting(true)
+    const wakingTimer = setTimeout(() => setIsWakingServer(true), WAKING_MESSAGE_DELAY_MS)
 
     try {
       const response = await fetch(`${apiBaseUrl}/api/auth/login`, {
@@ -57,6 +63,10 @@ function Login() {
       navigate('/home')
     } catch {
       setGeneralError('No se pudo conectar con el servidor')
+    } finally {
+      clearTimeout(wakingTimer)
+      setIsSubmitting(false)
+      setIsWakingServer(false)
     }
   }
 
@@ -117,8 +127,14 @@ function Login() {
             ¿Olvidaste tu contraseña?
           </Link>
 
-          <button type="submit">
-            Iniciar sesión
+          {isWakingServer && (
+            <div role="status" className="waking-message">
+              El servidor está despertando, esto puede tardar unos segundos…
+            </div>
+          )}
+
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Iniciando sesión…' : 'Iniciar sesión'}
           </button>
 
           <p className="register-link">
