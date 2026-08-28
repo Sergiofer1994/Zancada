@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import apiClient from '../../config/apiClient'
 import './Routes.css'
 
-const NEARBY_RADIUS_KM = 25
+const NEARBY_RADIUS_KM = 100
 
 const VIEW_ALL = 'all'
 const VIEW_MINE_NEARBY = 'mineNearby'
