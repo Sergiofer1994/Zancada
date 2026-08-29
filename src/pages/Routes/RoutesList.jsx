@@ -6,8 +6,8 @@ import './Routes.css'
 const NEARBY_RADIUS_KM = 100
 
 const VIEW_ALL = 'all'
-const VIEW_MINE_NEARBY = 'mineNearby'
-const VIEW_DISCOVER = 'discover'
+const VIEW_BETWEEN_USERS = 'betweenUsers'
+const VIEW_BY_LOCATION = 'byLocation'
 
 function RoutesList() {
   const navigate = useNavigate()
@@ -78,12 +78,12 @@ function RoutesList() {
     setLocationError('')
   }
 
-  const showMineNearby = () => {
-    loadNearbyRoutes(`/api/routes/nearby/user/${user.id}`, VIEW_MINE_NEARBY)
+  const showBetweenUsers = () => {
+    loadNearbyRoutes(`/api/routes/nearby?userId=${user.id}`, VIEW_BETWEEN_USERS)
   }
 
-  const showDiscover = () => {
-    loadNearbyRoutes(`/api/routes/nearby?userId=${user.id}`, VIEW_DISCOVER)
+  const showByLocation = () => {
+    loadNearbyRoutes('/api/routes/nearby/all', VIEW_BY_LOCATION)
   }
 
   if (!user) {
@@ -96,9 +96,9 @@ function RoutesList() {
   const emptyMessage =
     activeView === VIEW_ALL
       ? 'Aún no has creado ninguna ruta.'
-      : activeView === VIEW_MINE_NEARBY
-        ? 'No tienes rutas cerca de ti.'
-        : 'No hay rutas de otros usuarios cerca de ti.'
+      : activeView === VIEW_BETWEEN_USERS
+        ? 'No hay rutas de otros usuarios cerca de ti.'
+        : 'No hay rutas cerca de tu ubicación.'
 
   return (
     <main className="routes-page" role="main" aria-label="Mis rutas">
@@ -127,20 +127,20 @@ function RoutesList() {
 
         <button
           type="button"
-          className={activeView === VIEW_MINE_NEARBY ? 'filter-button active' : 'filter-button'}
-          onClick={showMineNearby}
-          aria-pressed={activeView === VIEW_MINE_NEARBY}
+          className={activeView === VIEW_BETWEEN_USERS ? 'filter-button active' : 'filter-button'}
+          onClick={showBetweenUsers}
+          aria-pressed={activeView === VIEW_BETWEEN_USERS}
         >
-          Mis rutas cerca
+          Rutas entre usuarios
         </button>
 
         <button
           type="button"
-          className={activeView === VIEW_DISCOVER ? 'filter-button active' : 'filter-button'}
-          onClick={showDiscover}
-          aria-pressed={activeView === VIEW_DISCOVER}
+          className={activeView === VIEW_BY_LOCATION ? 'filter-button active' : 'filter-button'}
+          onClick={showByLocation}
+          aria-pressed={activeView === VIEW_BY_LOCATION}
         >
-          Rutas cerca de mí
+          Rutas según ubicación
         </button>
       </div>
 
