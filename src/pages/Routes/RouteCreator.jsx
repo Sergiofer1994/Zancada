@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { MapContainer, TileLayer, Polyline, CircleMarker, useMapEvents } from 'react-leaflet'
+import { MapContainer, TileLayer, Polyline, CircleMarker, useMap, useMapEvents } from 'react-leaflet'
 import apiClient from '../../config/apiClient'
 import './RouteCreator.css'
+
+const DEFAULT_CENTER = [42.8782, -8.5448]
 
 function ClickCapture({ onAddPoint }) {
   useMapEvents({
@@ -17,6 +19,18 @@ function ClickCapture({ onAddPoint }) {
   return null
 }
 
+function MapRecenter({ center }) {
+  const map = useMap()
+
+  useEffect(() => {
+    if (center) {
+      map.setView(center, map.getZoom())
+    }
+  }, [center, map])
+
+  return null
+}
+
 function RouteCreator() {
   const navigate = useNavigate()
   const [user, setUser] = useState(null)
@@ -24,8 +38,7 @@ function RouteCreator() {
   const [name, setName] = useState('')
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState('')
-
-  const defaultCenter = [42.8782, -8.5448]
+  const [userLocation, setUserLocation] = useState(null)
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user')
@@ -37,6 +50,17 @@ function RouteCreator() {
 
     setUser(JSON.parse(storedUser))
   }, [navigate])
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setUserLocation([position.coords.latitude, position.coords.longitude])
+      },
+      () => {
+        setUserLocation(null)
+      }
+    )
+  }, [])
 
   const addPoint = (point) => {
     setPoints((prev) => [...prev, point])
@@ -121,6 +145,7 @@ function RouteCreator() {
   }
 
   const routeLine = points.map((point) => [point.latitude, point.longitude])
+  const mapCenter = userLocation || DEFAULT_CENTER
 
   return (
     <main className="creator-page" role="main" aria-label="Crear nueva ruta">
@@ -132,7 +157,7 @@ function RouteCreator() {
 
       <div className="creator-map-wrapper">
         <MapContainer
-          center={defaultCenter}
+          center={mapCenter}
           zoom={15}
           scrollWheelZoom={true}
           className="creator-map"
@@ -141,6 +166,7 @@ function RouteCreator() {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
+          <MapRecenter center={userLocation} />
           <ClickCapture onAddPoint={addPoint} />
           {points.length > 0 && (
             <Polyline
