@@ -159,6 +159,7 @@ function RoutesList() {
                   onClick={() => navigate(`/routes/${route.id}`)}
                 >
                   <span className="route-name">{route.name}</span>
+                  <span className="route-author">por {route.creatorName}</span>
                   <span className="route-distance">
                     {isNearbyView
                       ? `a ${route.distanceFromUserKm.toFixed(1)} km de ti`
