@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import apiClient from '../../config/apiClient'
+import RoutesMap from './RoutesMap'
 import './Routes.css'
 
 const NEARBY_RADIUS_KM = 100
@@ -16,6 +17,7 @@ function RoutesList() {
   const [nearbyRoutes, setNearbyRoutes] = useState([])
   const [activeView, setActiveView] = useState(VIEW_ALL)
   const [locationError, setLocationError] = useState('')
+  const [userPosition, setUserPosition] = useState(null)
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user')
@@ -56,6 +58,7 @@ function RoutesList() {
     try {
       const position = await getCurrentPosition()
       const { latitude, longitude } = position.coords
+      setUserPosition({ latitude, longitude })
       const separator = endpoint.includes('?') ? '&' : '?'
       const response = await apiClient(
         `${endpoint}${separator}latitude=${latitude}&longitude=${longitude}&radiusKm=${NEARBY_RADIUS_KM}`
@@ -76,6 +79,7 @@ function RoutesList() {
   const showAllRoutes = () => {
     setActiveView(VIEW_ALL)
     setLocationError('')
+    setUserPosition(null)
   }
 
   const showBetweenUsers = () => {
@@ -145,6 +149,15 @@ function RoutesList() {
       </div>
 
       {locationError && <p className="location-error" role="alert">{locationError}</p>}
+
+      {activeView === VIEW_BY_LOCATION && userPosition && (
+        <RoutesMap
+          userPosition={userPosition}
+          routes={visibleRoutes}
+          onSelectRoute={(routeId) => navigate(`/routes/${routeId}`)}
+          onRefresh={showByLocation}
+        />
+      )}
 
       <section aria-label="Listado de rutas">
         {visibleRoutes.length === 0 ? (
