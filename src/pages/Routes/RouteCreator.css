@@ -112,3 +112,18 @@
   opacity: 0.4;
   background: rgba(255, 255, 255, 0.5);
 }
+
+.creator-public-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffffff;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.creator-public-toggle input {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}

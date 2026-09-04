@@ -87,7 +87,7 @@ function RoutesList() {
   }
 
   const showByLocation = () => {
-    loadNearbyRoutes('/api/routes/nearby/all', VIEW_BY_LOCATION)
+    loadNearbyRoutes(`/api/routes/nearby/all?userId=${user.id}`, VIEW_BY_LOCATION)
   }
 
   if (!user) {

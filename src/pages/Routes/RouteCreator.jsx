@@ -39,6 +39,7 @@ function RouteCreator() {
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState('')
   const [userLocation, setUserLocation] = useState(null)
+  const [isPublic, setIsPublic] = useState(true)
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user')
@@ -128,7 +129,8 @@ function RouteCreator() {
           userId: user.id,
           name: name.trim(),
           distanceKm: getTotalDistance(),
-          path: JSON.stringify(points)
+          path: JSON.stringify(points),
+          isPublic
         })
       })
 
@@ -204,6 +206,15 @@ function RouteCreator() {
         value={name}
         onChange={(e) => setName(e.target.value)}
       />
+
+      <label className="creator-public-toggle">
+        <input
+          type="checkbox"
+          checked={isPublic}
+          onChange={(e) => setIsPublic(e.target.checked)}
+        />
+        <span>Compartir esta ruta con otros usuarios</span>
+      </label>
 
       {error && (
         <p className="creator-error" role="alert">{error}</p>
