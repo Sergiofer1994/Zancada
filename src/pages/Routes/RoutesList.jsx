@@ -9,12 +9,15 @@ const NEARBY_RADIUS_KM = 100
 const VIEW_ALL = 'all'
 const VIEW_BETWEEN_USERS = 'betweenUsers'
 const VIEW_BY_LOCATION = 'byLocation'
+const VIEW_SAVED = 'saved'
 
 function RoutesList() {
   const navigate = useNavigate()
   const [user, setUser] = useState(null)
   const [routes, setRoutes] = useState([])
   const [nearbyRoutes, setNearbyRoutes] = useState([])
+  const [savedRoutes, setSavedRoutes] = useState([])
+  const [savedRouteIds, setSavedRouteIds] = useState([])
   const [activeView, setActiveView] = useState(VIEW_ALL)
   const [locationError, setLocationError] = useState('')
   const [userPosition, setUserPosition] = useState(null)
@@ -30,6 +33,7 @@ function RoutesList() {
     const parsedUser = JSON.parse(storedUser)
     setUser(parsedUser)
     loadRoutes(parsedUser.id)
+    loadSavedRouteIds(parsedUser.id)
   }, [navigate])
 
   const loadRoutes = async (userId) => {
@@ -44,6 +48,21 @@ function RoutesList() {
       setRoutes(data)
     } catch {
       setRoutes([])
+    }
+  }
+
+  const loadSavedRouteIds = async (userId) => {
+    try {
+      const response = await apiClient(`/api/saved-routes/user/${userId}/ids`)
+
+      if (!response.ok) {
+        return
+      }
+
+      const data = await response.json()
+      setSavedRouteIds(data)
+    } catch {
+      setSavedRouteIds([])
     }
   }
 
@@ -90,19 +109,72 @@ function RoutesList() {
     loadNearbyRoutes(`/api/routes/nearby/all?userId=${user.id}`, VIEW_BY_LOCATION)
   }
 
+  const showSaved = async () => {
+    setLocationError('')
+    setUserPosition(null)
+
+    try {
+      const response = await apiClient(`/api/saved-routes/user/${user.id}`)
+
+      if (!response.ok) {
+        return
+      }
+
+      const data = await response.json()
+      setSavedRoutes(data)
+      setActiveView(VIEW_SAVED)
+    } catch {
+      setSavedRoutes([])
+    }
+  }
+
+  const isSaved = (routeId) => savedRouteIds.includes(routeId)
+
+  const toggleSave = async (routeId) => {
+    const alreadySaved = isSaved(routeId)
+    const method = alreadySaved ? 'DELETE' : 'POST'
+
+    try {
+      const response = await apiClient(`/api/saved-routes/${user.id}/${routeId}`, { method })
+
+      if (!response.ok) {
+        return
+      }
+
+      setSavedRouteIds((current) =>
+        alreadySaved ? current.filter((id) => id !== routeId) : [...current, routeId]
+      )
+
+      if (alreadySaved && activeView === VIEW_SAVED) {
+        setSavedRoutes((current) => current.filter((route) => route.id !== routeId))
+      }
+    } catch {
+      return
+    }
+  }
+
   if (!user) {
     return null
   }
 
-  const isNearbyView = activeView !== VIEW_ALL
-  const visibleRoutes = isNearbyView ? nearbyRoutes : routes
+  const isNearbyView = activeView === VIEW_BETWEEN_USERS || activeView === VIEW_BY_LOCATION
+  const showSaveButton = activeView !== VIEW_ALL
+
+  const visibleRoutes =
+    activeView === VIEW_ALL
+      ? routes
+      : activeView === VIEW_SAVED
+        ? savedRoutes
+        : nearbyRoutes
 
   const emptyMessage =
     activeView === VIEW_ALL
       ? 'Aún no has creado ninguna ruta.'
       : activeView === VIEW_BETWEEN_USERS
         ? 'No hay rutas de otros usuarios cerca de ti.'
-        : 'No hay rutas cerca de tu ubicación.'
+        : activeView === VIEW_BY_LOCATION
+          ? 'No hay rutas cerca de tu ubicación.'
+          : 'Aún no has guardado ninguna ruta.'
 
   return (
     <main className="routes-page" role="main" aria-label="Mis rutas">
@@ -146,6 +218,15 @@ function RoutesList() {
         >
           Rutas según ubicación
         </button>
+
+        <button
+          type="button"
+          className={activeView === VIEW_SAVED ? 'filter-button active' : 'filter-button'}
+          onClick={showSaved}
+          aria-pressed={activeView === VIEW_SAVED}
+        >
+          Rutas favoritas
+        </button>
       </div>
 
       {locationError && <p className="location-error" role="alert">{locationError}</p>}
@@ -165,7 +246,7 @@ function RoutesList() {
         ) : (
           <ul className="routes-list">
             {visibleRoutes.map((route) => (
-              <li key={route.id}>
+              <li key={route.id} className="route-row">
                 <button
                   type="button"
                   className="route-item"
@@ -179,6 +260,21 @@ function RoutesList() {
                       : `${route.distanceKm.toFixed(1)} km`}
                   </span>
                 </button>
+
+                {showSaveButton && (
+                  <button
+                    type="button"
+                    className={isSaved(route.id) ? 'route-save saved' : 'route-save'}
+                    onClick={() => toggleSave(route.id)}
+                    aria-pressed={isSaved(route.id)}
+                    aria-label={isSaved(route.id) ? 'Quitar de guardadas' : 'Guardar ruta'}
+                    title={isSaved(route.id) ? 'Quitar de guardadas' : 'Guardar ruta'}
+                  >
+                    <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                      <path d="M6 2a2 2 0 0 0-2 2v18l8-5 8 5V4a2 2 0 0 0-2-2H6z" />
+                    </svg>
+                  </button>
+                )}
               </li>
             ))}
           </ul>
