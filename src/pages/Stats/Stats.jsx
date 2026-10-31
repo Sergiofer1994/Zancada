@@ -7,6 +7,9 @@ function Stats() {
   const navigate = useNavigate()
   const [user, setUser] = useState(null)
   const [runs, setRuns] = useState([])
+  const [trainingPlan, setTrainingPlan] = useState('')
+  const [isGeneratingPlan, setIsGeneratingPlan] = useState(false)
+  const [planError, setPlanError] = useState('')
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user')
@@ -33,6 +36,28 @@ function Stats() {
       setRuns(data)
     } catch {
       setRuns([])
+    }
+  }
+
+  const generateTrainingPlan = async () => {
+    setIsGeneratingPlan(true)
+    setPlanError('')
+    setTrainingPlan('')
+
+    try {
+      const response = await apiClient(`/api/ai/training-plan/${user.id}`)
+
+      if (!response.ok) {
+        setPlanError('No se pudo generar el plan. Intentalo de nuevo mas tarde.')
+        return
+      }
+
+      const data = await response.json()
+      setTrainingPlan(data.plan)
+    } catch {
+      setPlanError('No se pudo conectar con el servidor.')
+    } finally {
+      setIsGeneratingPlan(false)
     }
   }
 
@@ -150,6 +175,23 @@ function Stats() {
               <span className="stats-record-label">Mejor ritmo</span>
               <span className="stats-record-value">{getBestPace()} /km</span>
             </div>
+          </section>
+
+          <section className="training-plan" aria-label="Plan de entrenamiento">
+            <button
+              type="button"
+              className="training-plan-button"
+              onClick={generateTrainingPlan}
+              disabled={isGeneratingPlan}
+            >
+              {isGeneratingPlan ? 'Generando plan...' : 'Generar plan de entrenamiento'}
+            </button>
+
+            {planError && <p className="training-plan-error" role="alert">{planError}</p>}
+
+            {trainingPlan && (
+              <article className="training-plan-result">{trainingPlan}</article>
+            )}
           </section>
         </>
       )}

@@ -71,3 +71,42 @@
   font-size: 16px;
   font-weight: 700;
 }
+
+.training-plan {
+  margin-top: 32px;
+}
+
+.training-plan-button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  background: #a78bfa;
+  color: #ffffff;
+}
+
+.training-plan-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.training-plan-error {
+  color: #F87171;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-top: 12px;
+}
+
+.training-plan-result {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background-color: #1a1a2e;
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
