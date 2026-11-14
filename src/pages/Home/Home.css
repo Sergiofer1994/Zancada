@@ -162,3 +162,26 @@ li {
   text-align: center;
   padding: 1rem 0;
 }
+
+.sport-selector {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.sport-button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #7c5cff;
+  background: transparent;
+  color: #7c5cff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sport-button.active {
+  background: #7c5cff;
+  color: #ffffff;
+}

@@ -3,6 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import apiClient from '../../config/apiClient'
 import './History.css'
 
+const SPORT_LABELS = {
+  RUNNING: 'Correr',
+  WALKING: 'Caminar',
+  CYCLING: 'Bici',
+}
+
 function History() {
   const navigate = useNavigate()
   const [user, setUser] = useState(null)
@@ -53,6 +59,14 @@ function History() {
     return `${paddedMinutes}:${paddedSeconds}`
   }
 
+  const getSportLabel = (sport) => {
+    return SPORT_LABELS[sport] || 'Actividad'
+  }
+
+  const isCycling = (sport) => {
+    return sport === 'CYCLING'
+  }
+
   const calculatePace = (distance, totalSeconds) => {
     if (distance === 0) {
       return "0'00\""
@@ -66,25 +80,39 @@ function History() {
     return `${paceMinutes}'${paddedPaceSeconds}"`
   }
 
+  const calculateSpeed = (distance, totalSeconds) => {
+    if (totalSeconds === 0) {
+      return '0.0'
+    }
+
+    const hours = totalSeconds / 3600
+    const speed = distance / hours
+
+    return speed.toFixed(1)
+  }
+
   if (!user) {
     return null
   }
 
   return (
-    <main className="history-page" role="main" aria-label="Historial de carreras">
+    <main className="history-page" role="main" aria-label="Historial de actividades">
 
       <header className="history-header">
         <h1>Historial</h1>
       </header>
 
-      <section aria-label="Listado de carreras">
+      <section aria-label="Listado de actividades">
         {runs.length === 0 ? (
-          <p className="no-runs">Aún no has registrado ninguna carrera.</p>
+          <p className="no-runs">Aún no has registrado ninguna actividad.</p>
         ) : (
           <ul className="history-list">
             {runs.map((run) => (
               <li key={run.id} className="history-item">
-                <span className="history-date">{formatDate(run.createdAt)}</span>
+                <div className="history-top">
+                  <span className="history-sport">{getSportLabel(run.sport)}</span>
+                  <span className="history-date">{formatDate(run.createdAt)}</span>
+                </div>
                 <div className="history-stats">
                   <div className="history-stat">
                     <span className="history-value">{run.distance.toFixed(2)}</span>
@@ -95,8 +123,17 @@ function History() {
                     <span className="history-label">tiempo</span>
                   </div>
                   <div className="history-stat">
-                    <span className="history-value">{calculatePace(run.distance, run.seconds)}</span>
-                    <span className="history-label">ritmo/km</span>
+                    {isCycling(run.sport) ? (
+                      <>
+                        <span className="history-value">{calculateSpeed(run.distance, run.seconds)}</span>
+                        <span className="history-label">km/h</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="history-value">{calculatePace(run.distance, run.seconds)}</span>
+                        <span className="history-label">ritmo/km</span>
+                      </>
+                    )}
                   </div>
                 </div>
               </li>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import RouteMap from '../RouteMap/RouteMap.jsx'
 import './Run.css'
 
@@ -14,6 +14,8 @@ function Run() {
   const [gpsStatus, setGpsStatus] = useState('searching')
   const [gpsError, setGpsError] = useState('')
   const navigate = useNavigate()
+  const location = useLocation()
+  const sport = location.state?.sport || 'RUNNING'
 
   useEffect(() => {
     if (!isRunning) {
@@ -194,6 +196,7 @@ function Run() {
               seconds: seconds,
               pace: calculatePace(),
               positions: positions,
+              sport: sport,
             },
           })
         }}

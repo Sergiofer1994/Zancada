@@ -60,7 +60,8 @@ function Summary() {
         body: JSON.stringify({
           userId: user.id,
           distance: data.distance,
-          seconds: data.seconds
+          seconds: data.seconds,
+          sport: data.sport
         })
       })
 

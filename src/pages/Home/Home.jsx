@@ -3,10 +3,23 @@ import { useNavigate } from 'react-router-dom'
 import apiClient from '../../config/apiClient'
 import './Home.css'
 
+const SPORTS = [
+  { id: 'RUNNING', label: 'Correr' },
+  { id: 'WALKING', label: 'Caminar' },
+  { id: 'CYCLING', label: 'Bici' },
+]
+
+const SPORT_LABELS = {
+  RUNNING: 'Correr',
+  WALKING: 'Caminar',
+  CYCLING: 'Bici',
+}
+
 function Home() {
   const navigate = useNavigate()
   const [user, setUser] = useState(null)
   const [runs, setRuns] = useState([])
+  const [selectedSport, setSelectedSport] = useState('RUNNING')
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user')
@@ -66,6 +79,10 @@ function Home() {
     const paddedPaceSeconds = String(paceSeconds).padStart(2, '0')
 
     return `${paceMinutes}'${paddedPaceSeconds}"`
+  }
+
+  const getSportLabel = (sport) => {
+    return SPORT_LABELS[sport] || 'Actividad'
   }
 
   const formatRunDate = (createdAt) => {
@@ -128,26 +145,40 @@ function Home() {
         </div>
       </section>
 
+      <div className="sport-selector" role="group" aria-label="Elegir deporte">
+        {SPORTS.map((sport) => (
+          <button
+            key={sport.id}
+            type="button"
+            className={selectedSport === sport.id ? 'sport-button active' : 'sport-button'}
+            onClick={() => setSelectedSport(sport.id)}
+            aria-pressed={selectedSport === sport.id}
+          >
+            {sport.label}
+          </button>
+        ))}
+      </div>
+
       <button
         type="button"
         className="start-button"
-        aria-label="Iniciar una nueva carrera"
-        onClick={() => navigate('/run')}
+        aria-label="Iniciar una nueva actividad"
+        onClick={() => navigate('/run', { state: { sport: selectedSport } })}
       >
-        Iniciar carrera
+        Iniciar actividad
       </button>
 
-      <section aria-label="Últimas carreras">
-        <h2>Últimas carreras</h2>
+      <section aria-label="Últimas actividades">
+        <h2>Últimas actividades</h2>
         {runs.length === 0 ? (
-          <p className="no-runs">Aún no has registrado ninguna carrera.</p>
+          <p className="no-runs">Aún no has registrado ninguna actividad.</p>
         ) : (
           <ul>
             {runs.map((run) => (
               <li key={run.id}>
                 <div>
                   <span className="run-date">{formatRunDate(run.createdAt)}</span>
-                  <span className="run-name">Carrera</span>
+                  <span className="run-name">{getSportLabel(run.sport)}</span>
                 </div>
                 <div>
                   <span className="run-km">{run.distance.toFixed(1)} km</span>

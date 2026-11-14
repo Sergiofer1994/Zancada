@@ -30,11 +30,23 @@
   padding: 16px 20px;
 }
 
+.history-top {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.history-sport {
+  color: #a78bfa;
+  font-size: 14px;
+  font-weight: 700;
+}
+
 .history-date {
-  display: block;
   color: #ffffff;
   font-weight: 600;
-  margin-bottom: 16px;
+  font-size: 14px;
 }
 
 .history-stats {
