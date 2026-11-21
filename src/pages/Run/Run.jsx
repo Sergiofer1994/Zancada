@@ -6,6 +6,12 @@ import './Run.css'
 const ACCURACY_THRESHOLD_METERS = 50
 const MIN_SEGMENT_KM = 0.01
 
+const SPORT_NOUNS = {
+  RUNNING: 'carrera',
+  WALKING: 'caminata',
+  CYCLING: 'ruta en bici',
+}
+
 function Run() {
   const [seconds, setSeconds] = useState(0)
   const [isRunning, setIsRunning] = useState(true)
@@ -16,6 +22,7 @@ function Run() {
   const navigate = useNavigate()
   const location = useLocation()
   const sport = location.state?.sport || 'RUNNING'
+  const sportNoun = SPORT_NOUNS[sport] || 'actividad'
 
   useEffect(() => {
     if (!isRunning) {
@@ -68,7 +75,7 @@ function Run() {
       (error) => {
         if (error.code === error.PERMISSION_DENIED) {
           setGpsStatus('error')
-          setGpsError('Permiso de ubicación denegado. Actívalo en los ajustes para registrar tu carrera.')
+          setGpsError('Permiso de ubicación denegado. Actívalo en los ajustes para registrar tu actividad.')
           return
         }
 
@@ -140,7 +147,7 @@ function Run() {
   }
 
   return (
-    <main role="main" aria-label="Carrera en curso">
+    <main role="main" aria-label="Actividad en curso">
 
       <header className="run-header">
         <span className="live-badge">DISTANCIA RECORRIDA</span>
@@ -179,15 +186,15 @@ function Run() {
         type="button"
         className="pause-button"
         onClick={() => setIsRunning(!isRunning)}
-        aria-label={isRunning ? 'Pausar carrera' : 'Reanudar carrera'}
+        aria-label={isRunning ? `Pausar ${sportNoun}` : `Reanudar ${sportNoun}`}
       >
-        {isRunning ? 'Pausar carrera' : 'Reanudar carrera'}
+        {isRunning ? `Pausar ${sportNoun}` : `Reanudar ${sportNoun}`}
       </button>
 
       <button
         type="button"
         className="stop-button"
-        aria-label="Finalizar carrera"
+        aria-label={`Finalizar ${sportNoun}`}
         onClick={() => {
           setIsRunning(false)
           navigate('/summary', {
@@ -201,7 +208,7 @@ function Run() {
           })
         }}
       >
-        Finalizar carrera
+        Finalizar {sportNoun}
       </button>
 
     </main>

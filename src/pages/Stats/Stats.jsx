@@ -173,7 +173,7 @@ function Stats() {
     const labels = {
       ALL: 'Generar plan multideporte',
       RUNNING: 'Generar plan de carrera',
-      WALKING: 'Generar plan de marcha',
+      WALKING: 'Generar plan de caminata',
       CYCLING: 'Generar plan de ciclismo',
     }
     return labels[selectedFilter] || 'Generar plan de entrenamiento'
