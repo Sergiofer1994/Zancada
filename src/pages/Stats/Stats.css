@@ -110,3 +110,28 @@
   line-height: 1.6;
   white-space: pre-wrap;
 }
+
+.stats-filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.stats-filter {
+  flex: 1;
+  min-width: 70px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #7c5cff;
+  background: transparent;
+  color: #7c5cff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.stats-filter.active {
+  background: #7c5cff;
+  color: #ffffff;
+}

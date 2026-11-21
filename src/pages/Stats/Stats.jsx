@@ -3,10 +3,18 @@ import { useNavigate } from 'react-router-dom'
 import apiClient from '../../config/apiClient'
 import './Stats.css'
 
+const FILTERS = [
+  { id: 'ALL', label: 'Todos' },
+  { id: 'RUNNING', label: 'Correr' },
+  { id: 'WALKING', label: 'Caminar' },
+  { id: 'CYCLING', label: 'Bici' },
+]
+
 function Stats() {
   const navigate = useNavigate()
   const [user, setUser] = useState(null)
   const [runs, setRuns] = useState([])
+  const [selectedFilter, setSelectedFilter] = useState('ALL')
   const [trainingPlan, setTrainingPlan] = useState('')
   const [isGeneratingPlan, setIsGeneratingPlan] = useState(false)
   const [planError, setPlanError] = useState('')
@@ -45,7 +53,7 @@ function Stats() {
     setTrainingPlan('')
 
     try {
-      const response = await apiClient(`/api/ai/training-plan/${user.id}`)
+      const response = await apiClient(`/api/ai/training-plan/${user.id}?sport=${selectedFilter}`)
 
       if (!response.ok) {
         setPlanError('No se pudo generar el plan. Intentalo de nuevo mas tarde.')
@@ -61,19 +69,30 @@ function Stats() {
     }
   }
 
-  const getTotalDistance = () => {
-    return runs.reduce((total, run) => total + run.distance, 0)
+  const getFilteredRuns = () => {
+    if (selectedFilter === 'ALL') {
+      return runs
+    }
+    return runs.filter((run) => run.sport === selectedFilter)
   }
 
-  const getTotalSeconds = () => {
-    return runs.reduce((total, run) => total + run.seconds, 0)
+  const isCyclingFilter = () => {
+    return selectedFilter === 'CYCLING'
   }
 
-  const getAverageDistance = () => {
-    if (runs.length === 0) {
+  const getTotalDistance = (activities) => {
+    return activities.reduce((total, run) => total + run.distance, 0)
+  }
+
+  const getTotalSeconds = (activities) => {
+    return activities.reduce((total, run) => total + run.seconds, 0)
+  }
+
+  const getAverageDistance = (activities) => {
+    if (activities.length === 0) {
       return 0
     }
-    return getTotalDistance() / runs.length
+    return getTotalDistance(activities) / activities.length
   }
 
   const formatDuration = (totalSeconds) => {
@@ -100,36 +119,73 @@ function Stats() {
     return `${paceMinutes}'${paddedPaceSeconds}"`
   }
 
-  const getAveragePace = () => {
-    return formatPace(getTotalDistance(), getTotalSeconds())
-  }
-
-  const getLongestRun = () => {
-    if (runs.length === 0) {
-      return 0
-    }
-    return Math.max(...runs.map((run) => run.distance))
-  }
-
-  const getBestPace = () => {
-    const runsWithDistance = runs.filter((run) => run.distance > 0)
-
-    if (runsWithDistance.length === 0) {
-      return "0'00\""
+  const formatSpeed = (distance, totalSeconds) => {
+    if (totalSeconds === 0) {
+      return '0.0'
     }
 
-    const bestRun = runsWithDistance.reduce((best, run) => {
+    const hours = totalSeconds / 3600
+    return (distance / hours).toFixed(1)
+  }
+
+  const getAverageMetric = (activities) => {
+    const totalDistance = getTotalDistance(activities)
+    const totalSeconds = getTotalSeconds(activities)
+
+    if (isCyclingFilter()) {
+      return `${formatSpeed(totalDistance, totalSeconds)} km/h`
+    }
+    return formatPace(totalDistance, totalSeconds)
+  }
+
+  const getBestMetric = (activities) => {
+    const withDistance = activities.filter((run) => run.distance > 0)
+
+    if (withDistance.length === 0) {
+      return isCyclingFilter() ? '0.0 km/h' : "0'00\""
+    }
+
+    if (isCyclingFilter()) {
+      const fastest = withDistance.reduce((best, run) => {
+        const currentSpeed = run.distance / run.seconds
+        const bestSpeed = best.distance / best.seconds
+        return currentSpeed > bestSpeed ? run : best
+      })
+      return `${formatSpeed(fastest.distance, fastest.seconds)} km/h`
+    }
+
+    const bestRun = withDistance.reduce((best, run) => {
       const currentPace = run.seconds / run.distance
       const bestPace = best.seconds / best.distance
       return currentPace < bestPace ? run : best
     })
+    return `${formatPace(bestRun.distance, bestRun.seconds)} /km`
+  }
 
-    return formatPace(bestRun.distance, bestRun.seconds)
+  const getLongest = (activities) => {
+    if (activities.length === 0) {
+      return 0
+    }
+    return Math.max(...activities.map((run) => run.distance))
+  }
+
+  const getPlanButtonLabel = () => {
+    const labels = {
+      ALL: 'Generar plan multideporte',
+      RUNNING: 'Generar plan de carrera',
+      WALKING: 'Generar plan de marcha',
+      CYCLING: 'Generar plan de ciclismo',
+    }
+    return labels[selectedFilter] || 'Generar plan de entrenamiento'
   }
 
   if (!user) {
     return null
   }
+
+  const filteredRuns = getFilteredRuns()
+  const averageMetricLabel = isCyclingFilter() ? 'velocidad media' : 'ritmo medio'
+  const bestMetricLabel = isCyclingFilter() ? 'Mejor velocidad' : 'Mejor ritmo'
 
   return (
     <main className="stats-page" role="main" aria-label="Estadísticas">
@@ -138,29 +194,43 @@ function Stats() {
         <h1>Estadísticas</h1>
       </header>
 
-      {runs.length === 0 ? (
-        <p className="no-stats">Aún no has registrado ninguna carrera.</p>
+      <div className="stats-filters" role="group" aria-label="Filtrar por deporte">
+        {FILTERS.map((filter) => (
+          <button
+            key={filter.id}
+            type="button"
+            className={selectedFilter === filter.id ? 'stats-filter active' : 'stats-filter'}
+            onClick={() => setSelectedFilter(filter.id)}
+            aria-pressed={selectedFilter === filter.id}
+          >
+            {filter.label}
+          </button>
+        ))}
+      </div>
+
+      {filteredRuns.length === 0 ? (
+        <p className="no-stats">No hay actividades de este tipo.</p>
       ) : (
         <>
           <section className="stats-grid" aria-label="Resumen general">
             <div className="stats-card">
-              <span className="stats-value">{getTotalDistance().toFixed(1)}</span>
+              <span className="stats-value">{getTotalDistance(filteredRuns).toFixed(1)}</span>
               <span className="stats-label">km totales</span>
             </div>
             <div className="stats-card">
-              <span className="stats-value">{runs.length}</span>
+              <span className="stats-value">{filteredRuns.length}</span>
               <span className="stats-label">salidas</span>
             </div>
             <div className="stats-card">
-              <span className="stats-value">{formatDuration(getTotalSeconds())}</span>
+              <span className="stats-value">{formatDuration(getTotalSeconds(filteredRuns))}</span>
               <span className="stats-label">tiempo total</span>
             </div>
             <div className="stats-card">
-              <span className="stats-value">{getAveragePace()}</span>
-              <span className="stats-label">ritmo medio</span>
+              <span className="stats-value">{getAverageMetric(filteredRuns)}</span>
+              <span className="stats-label">{averageMetricLabel}</span>
             </div>
             <div className="stats-card">
-              <span className="stats-value">{getAverageDistance().toFixed(1)}</span>
+              <span className="stats-value">{getAverageDistance(filteredRuns).toFixed(1)}</span>
               <span className="stats-label">km de media</span>
             </div>
           </section>
@@ -168,12 +238,12 @@ function Stats() {
           <section className="stats-records" aria-label="Récords">
             <h2 className="stats-records-title">Récords</h2>
             <div className="stats-record">
-              <span className="stats-record-label">Carrera más larga</span>
-              <span className="stats-record-value">{getLongestRun().toFixed(2)} km</span>
+              <span className="stats-record-label">Actividad más larga</span>
+              <span className="stats-record-value">{getLongest(filteredRuns).toFixed(2)} km</span>
             </div>
             <div className="stats-record">
-              <span className="stats-record-label">Mejor ritmo</span>
-              <span className="stats-record-value">{getBestPace()} /km</span>
+              <span className="stats-record-label">{bestMetricLabel}</span>
+              <span className="stats-record-value">{getBestMetric(filteredRuns)}</span>
             </div>
           </section>
 
@@ -184,7 +254,7 @@ function Stats() {
               onClick={generateTrainingPlan}
               disabled={isGeneratingPlan}
             >
-              {isGeneratingPlan ? 'Generando plan...' : 'Generar plan de entrenamiento'}
+              {isGeneratingPlan ? 'Generando plan...' : getPlanButtonLabel()}
             </button>
 
             {planError && <p className="training-plan-error" role="alert">{planError}</p>}
