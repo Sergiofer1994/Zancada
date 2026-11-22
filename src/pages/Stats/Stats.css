@@ -10,7 +10,8 @@
 }
 
 .no-stats {
-  color: #9ca3af;
+  color: #a0a0a0
+;
   text-align: center;
   margin-top: 48px;
 }
@@ -39,7 +40,8 @@
 }
 
 .stats-label {
-  color: #9ca3af;
+  color: #a0a0a0
+;
   font-size: 13px;
   margin-top: 6px;
   text-align: center;

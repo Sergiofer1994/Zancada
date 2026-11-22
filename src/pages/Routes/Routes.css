@@ -60,7 +60,7 @@
 }
 
 .no-routes {
-  color: #8B8B96;
+  color: #a0a0a0;
   font-size: 0.9rem;
   text-align: center;
   padding: 2rem 0;
@@ -79,7 +79,7 @@
 }
 
 .route-field-label {
-  color: #8B8B96;
+  color: #a0a0a0;
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
@@ -170,7 +170,8 @@
 
 .route-author {
   font-size: 0.85rem;
-  color: #9ca3af;
+  color: #a0a0a0
+;
   margin-top: 2px;
 }
 

@@ -42,7 +42,7 @@ main {
 
 .hero-title {
   position: absolute;
-  bottom: 16px;
+  bottom: 4px;
   left: 0;
   right: 0;
   text-align: center;
@@ -65,7 +65,7 @@ main {
 label {
   display: block;
   font-size: 11px;
-  color: #8B8B96;
+  color: #a0a0a0;
   margin-bottom: 6px;
   margin-top: 16px;
 }
@@ -117,7 +117,7 @@ button:focus {
 
 .register-link {
   text-align: center;
-  color: #8B8B96;
+  color: #a0a0a0;
   font-size: 12px;
   margin-top: 18px;
 }
@@ -163,7 +163,7 @@ a:focus {
 
 p {
   font-size: 13px;
-  color: #8B8B96;
+  color: #a0a0a0;
 }
 
 .gender-options {
@@ -184,7 +184,7 @@ p {
   background: #15151C;
   cursor: pointer;
   font-size: 12px;
-  color: #8B8B96;
+  color: #a0a0a0;
   margin-top: 0;
   transition: border-color 0.2s ease, background 0.2s ease;
 }
