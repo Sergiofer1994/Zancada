@@ -28,7 +28,7 @@ nav {
 }
 
 .nav-item.active .nav-icon {
-  color: #9F7AFF;
+  color: #B8A4FF;
 }
 
 .nav-label {
@@ -38,7 +38,7 @@ nav {
 }
 
 .nav-item.active .nav-label {
-  color: #A78BFA;
+  color: #B8A4FF;
   font-weight: 600;
 }
 
